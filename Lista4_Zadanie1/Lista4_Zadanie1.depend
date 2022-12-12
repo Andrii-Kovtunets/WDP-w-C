@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1669043096 source:/home/i341404/Andrey/WDP w C/Lista4_Zadanie1/main.c
+	<stdio.h>
+	<stdlib.h>
+
+1669041155 /home/i341404/Andrey/WDP w C/Lista4_Zadanie1/subtitles.h
+
+1669041184 source:/home/i341404/Andrey/WDP w C/Lista4_Zadanie1/subtitles.c
+	"subtitles.h"
+
+1669041155 /home/i341404/Andrey/WDP w C/Lista4_Zadanie1/napisy.h
+
+1669042809 source:/home/i341404/Andrey/WDP w C/Lista4_Zadanie1/napisy.c
+	"napisy.h"
+
