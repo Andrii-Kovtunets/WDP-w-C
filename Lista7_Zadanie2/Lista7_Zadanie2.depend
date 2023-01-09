@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1670864450 source:/home/i341404/Andrey/WDP w C/Lista7_Zadanie2/main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+

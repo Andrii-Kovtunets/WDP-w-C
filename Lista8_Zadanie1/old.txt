@@ -1,0 +1,53 @@
+typedef struct node
+{
+    typedef struct node;
+    struct tree *parent;
+    int key;
+    node* left;
+    node* right;
+}node;
+
+int main()
+{
+    node* root;
+    create(root, 5);
+    return 0;
+}
+
+node *create(node *root, int key)
+{
+// Выделение памяти под корень дерева
+    node *tmp = malloc(sizeof(node));
+// Присваивание значения ключу
+    tmp -> key = key;
+// Присваивание указателю на родителя значения NULL
+    tmp -> parent = NULL;
+// Присваивание указателю на левое и правое поддерево значения NULL
+    tmp -> left = tmp -> right = NULL;
+    root = tmp;
+    return root;
+}
+
+node *search(node * root, int key)
+{
+// Если дерево пусто или ключ корня равен искомому ключу, то возвращается указатель на корень
+    if ((root == NULL) || (root -> key == key))
+        return root;
+// Поиск нужного узла
+    if (key < root -> key)
+        return search(root -> left, key);
+    else return search(root -> right, key);
+}
+
+struct node* insert(struct node *root, int x)
+{
+    //searching for the place to insert
+    if(root==NULL)
+        return new_node(x);
+    else if(x>root->data) // x is greater. Should be inserted to right
+        root->right_child = insert(root->right_child, x);
+    else // x is smaller should be inserted to left
+        root->left_child = insert(root->left_child,x);
+    return root;
+}
+
