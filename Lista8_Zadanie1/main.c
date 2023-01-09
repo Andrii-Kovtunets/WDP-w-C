@@ -45,10 +45,11 @@ Node* insert(Node* root, int x)
     {
         root->right = insert(root->right, x);
     }
-    else
+    else if(x < root->data)
     {
         root->left = insert(root->left, x);
     }
+
     return root;
 }
 
@@ -146,58 +147,238 @@ void inorder(Node* root)
 
 Node* find_prev(Node* root, int x)
 {
-    return Search(root, x)->left;
+    if(root != NULL)
+    {
+        if(x > root->data)
+        {
+            Node* prev = find_prev(root->right, x);
+            if(prev == NULL)
+            {
+                prev = root;
+            }
+
+            return prev;
+        }
+        else if(x < root->data)
+        {
+            Node* prev = find_prev(root->left, x);
+
+            return prev;
+        }
+        else
+        {
+            return root->left;
+        }
+    }
+
+    return root;
 }
+
 
 Node* find_next(Node* root, int x)
 {
-    Node* node = Search(root, x);
-    if(node == NULL)
+    if(root != NULL)
     {
-    return node
+        if(x > root->data)
+        {
+            Node* next = find_next(root->right, x);
+
+            return next;
+        }
+        else if(x < root->data)
+        {
+            Node* next = find_next(root->left, x);
+
+            if(next == NULL)
+            {
+                next = root;
+            }
+
+            return next;
+        }
+        else
+        {
+            return root->right;
+        }
+    }
+
+    return root;
+}
+
+int longerer = 7;
+
+int printTreeAlternate(Node* root, int length)
+{
+    if(root != NULL)
+    {
+        length += 3;
+        printTreeAlternate(root->left, length);
+
+        for(int i = 0; i < length; i++)
+        {
+            printf(" ");
+        }
+
+        printf("%d\n", root->data);
+
+        printTreeAlternate(root->right, length);
+    }
+    else
+    {
+        length -= 3;
+    }
+}
+
+void printTree(Node* root, int length, int vector)
+{
+    if(root != NULL)
+    {
+        length += longerer;
+        printTree(root->left, length, 0);
+
+
+        if(vector == 1 && length > longerer)
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                printf(" ");
+            }
+        }
+
+        for(int i = 0; i < length; i++)
+        {
+            printf(" ");
+        }
+        if(length > longerer)
+        {
+            printf("-- ");
+        }
+
+        printf("%d\n", root->data);
+
+        if(vector == 0)
+        {
+            length-=3;
+            for(int i = 0; i < length; i++)
+            {
+                printf(" ");
+            }
+            if(root->right != NULL && length > longerer)
+            {
+                printf("/");
+                for(int i = 0; i < longerer - 1; i++)
+                {
+                    printf(" ");
+                }
+                printf("\\\n");
+            }
+            else if(length > longerer)
+            {
+                printf("/\n");
+            }
+            else
+            {
+                for(int i = 0; i < longerer; i++)
+                {
+                    printf(" ");
+                }
+                printf("\\\n");
+            }
+        }
+        else
+        {
+                if(root->right != NULL)
+                {
+                    for(int i = 0; i < length + longerer; i++)
+                    {
+                        printf(" ");
+                    }
+                    printf("\\\n");
+                }
+        }
+
+        printTree(root->right, length, 1);
+    }
+    else
+    {
+        length-=longerer;
+    }
 }
 
 int main()
 {
+    Node* root2 = NULL;
+
+    printTreeAlternate(root2, 0);
+
     Node* root = new_Node(5);
+
     insert(root, 3);
-    insert(root, 6);
+
     insert(root, 7);
+
+    insert(root, 6);
+    //insert(root, 7);
     insert(root, 1);
+    insert(root, 5);
+    insert(root, 5);
+    insert(root, 6);
+    insert(root, 6);
+    insert(root, 4);
+    insert(root, 8);
+
+    insert(root, 2);
+    insert(root, 0);
+    insert(root, -1);
+
+    //printTree(root, 0, 0);
+    //printTreeAlternate(root, 0);
+
+    printf("\n\n----------------------------\n\n");
+
 
     inorder(root);
     printf("\n");
 
-    if(Search(root, 6) != NULL)
+    int number1 = 6;
+    if(Search(root, number1) != NULL)
     {
-        printf("Finded\n");
+        printf("Number %d was finded\n", number1);
     }
     else
     {
         printf("Not finded\n");
     }
 
-    delete(root, 7);
+    int number2 = 7;
+    delete(root, number2);
+    printf("Number %d was deleted\n", number2);
+    printf("\n");
+    inorder(root);
+    printf("\n");
 
-    Node* prev = find_prev(root, 1);
+    int number = 7;
+    Node* prev = find_prev(root, number);
     if(prev != NULL)
     {
-        printf("Previous for 5 = %d\n", prev->data);
+        printf("Previous for %d = %d\n", number, prev->data);
     }
     else
     {
-        printf("1 does'nt have previous element\n");
+        printf("%d does'nt have previous element\n", number);
     }
 
-    Node* next = find_next(root, 1);
+    Node* next = find_next(root, number);
     if(next != NULL)
     {
-        printf("Next for 5 = %d\n", next->data);
+        printf("Next for %d = %d\n", number, next->data);
     }
     else
     {
-        printf("1 does'nt have next element\n");
+        printf("%d does'nt have next element\n", number);
     }
+
+    printf("\n");
 
     printf("Minimum = %d\n", find_minimum(root)->data);
     printf("Maximum = %d\n", find_maximum(root)->data);
