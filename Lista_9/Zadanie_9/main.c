@@ -7,11 +7,10 @@ typedef struct Node
     struct Node** children;
 }Node;
 
-Node* CreateNode(char letter)
+Node* CreateNode()
 {
     Node* node = (Node*)malloc(sizeof(Node));
-    node->letter = letter;
-    SetAlphabet(node->children);
+    node->children = NULL;
 
     return node;
 }
@@ -28,61 +27,30 @@ void Add(Words_BST* tree, const char* word);
 Words_BST* Create_Words_BST()
 {
     Words_BST* tree = (Words_BST*)malloc(sizeof(Words_BST));
-    Node* node = (Node*)malloc(sizeof(Node));
-    tree->root = node;
+    tree->root = CreateNode();
     tree->Add = Add;
 }
 
-void SetAlphabet(Node** node)
+void CreateAlphabet(Node** node)
 {
+    node = (Node**)calloc(26, sizeof(Node*));
     for (int i = 0; i < 26; i++)
     {
-        node[i] = CreateNode('a' + i);
+        node[i] = CreateNode();
     }
 }
-
-/*Node* AddLetter(Node* root, char letter)
-{
-    if (root != NULL)
-    {
-        if (letter < root->letter)
-        {
-            root->left = AddLetter(root->left, letter);
-            return root->left;
-        }
-        else
-        {
-            root->right = AddLetter(root->right, letter);
-            return root->right;
-        }
-    }
-    else
-    {
-        //printf("%c ", letter);
-        return CreateNode(letter);
-    }
-
-    return root;
-}*/
 
 void Add(Words_BST* tree, const char* word)
 {
     Node* root = tree->root;
-    int i = 0;
-    for(; root->children != NULL; i++)
+    for(int i = 0; word[i] != '\0'; i++)
     {
-        root = root->children[word[i] - 'a'];
-    }
-    root->letter = word[i];
-    SetAlphabet(root->children);
-}
-
-void PrintRoot(Node* root)
-{
-    for(int i = 0; i < 26; i++)
-    {
-        printf("%c", root->letter);
-        PrintRoot(root->children[i]);
+        if(root->children == NULL)
+        {
+            root->letter = word[i];
+            CreateAlphabet(root->children);
+            root = root->children[word[i] - 'a'];
+        }
     }
 }
 
@@ -91,5 +59,4 @@ int main()
     Words_BST* tree = Create_Words_BST();
     const char* word = "andrew";
     tree->Add(tree, word);
-
 }
